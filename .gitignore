@@ -1,4 +1,9 @@
-/webapplication/.vs
+
+*.user
+
+
+/.vs
+/.git
 /webapplication/.vscode
 /webapplication/bin
 /webapplication/obj

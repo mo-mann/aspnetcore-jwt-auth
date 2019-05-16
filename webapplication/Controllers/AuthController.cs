@@ -24,15 +24,34 @@ namespace webapplication.Controllers
                 return BadRequest("Invalid client request");
             }
 
-            if (user.UserName == "johndoe" && user.Password == "def@123")
+            user.UserName = "johndoe";
+            user.Password = "Str0ng";
+            user.Email = "johndoe@hotmail.com";
+            user.FirstName = "John";
+            user.LastName = "Doe";
+            user.PhoneNumber = "+1123456789";
+            user.Roles = "SuperUser;Student";
+
+            if (user.UserName == "johndoe" && user.Password == "Str0ng")
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
+                var claims = new List<Claim>
+                {
+                    new Claim("UserName", user.UserName),
+                    new Claim("Email", user.Email),
+                    new Claim("FirstName", user.FirstName),
+                    new Claim("LastName", user.LastName),
+                    new Claim("PhoneNumber", user.PhoneNumber),
+                    new Claim("Roles", user.Roles),
+                    //More custom claims
+                };
+
                 var tokeOptions = new JwtSecurityToken(
                     issuer: "http://localhost:5000",
                     audience: "http://localhost:5000",
-                    claims: new List<Claim>(),
+                    claims: claims,
                     expires: DateTime.Now.AddMinutes(5),
                     signingCredentials: signinCredentials
                 );
